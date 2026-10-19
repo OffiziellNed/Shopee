@@ -26,11 +26,36 @@ import {
 } from 'lucide-react';
 
 // Types
+type Tab = 'overview' | 'growth' | 'operational' | 'admin';
 
+type GameResearch = {
+  id: string;
+  judul: string;
+  platform: 'PS1' | 'PSP' | 'APK';
+  trend: number;
+  sumber: 'YouTube' | 'TikTok' | 'Google';
+  status: 'Riset' | 'Approved' | 'Skip';
+  views: string;
+};
 
+type Schedule = {
+  id: string;
+  game: string;
+  day: string;
+  time: string;
+  platform: 'PS1' | 'PSP' | 'APK';
+};
 
+type QueueItem = {
+  id: string;
+  title: string;
+  platform: 'PS1' | 'PSP' | 'APK';
+  size: string;
+  linkHealth: 'green' | 'red' | 'yellow';
+  status: 'Belum Upload' | 'Sudah' | 'Perlu Update Link';
+};
 
-const initialResearch = [
+const initialResearch: GameResearch[] = [
   { id: '1', judul: 'GTA San Andreas Definitive', platform: 'PSP', trend: 9.4, sumber: 'TikTok', status: 'Approved', views: '2.4M' },
   { id: '2', judul: 'Bully Anniversary Edition', platform: 'APK', trend: 8.7, sumber: 'YouTube', status: 'Riset', views: '1.1M' },
   { id: '3', judul: 'God of War II', platform: 'PS1', trend: 9.1, sumber: 'YouTube', status: 'Approved', views: '3.2M' },
@@ -40,7 +65,7 @@ const initialResearch = [
   { id: '7', judul: 'PES 2024 Patch', platform: 'PSP', trend: 7.2, sumber: 'YouTube', status: 'Riset', views: '620K' },
 ];
 
-const initialSchedule = [
+const initialSchedule: Schedule[] = [
   { id: '1', game: 'GTA Vice City Stories', day: 'Sen', time: '09:00', platform: 'PSP' },
   { id: '2', game: 'Bully', day: 'Sen', time: '14:00', platform: 'APK' },
   { id: '3', game: 'God of War', day: 'Sel', time: '10:00', platform: 'PS1' },
@@ -50,7 +75,7 @@ const initialSchedule = [
   { id: '7', game: 'Resident Evil 4', day: 'Sab', time: '10:00', platform: 'PS1' },
 ];
 
-const initialQueue = [
+const initialQueue: QueueItem[] = [
   { id: '1', title: 'Gran Turismo 4', platform: 'PS1', size: '2.8 GB', linkHealth: 'green', status: 'Sudah' },
   { id: '2', title: 'Black - Mod HD', platform: 'PS1', size: '1.2 GB', linkHealth: 'red', status: 'Perlu Update Link' },
   { id: '3', title: 'God Hand', platform: 'PS1', size: '1.1 GB', linkHealth: 'green', status: 'Belum Upload' },
@@ -70,12 +95,12 @@ const salesData = [
 ];
 
 export default function Page() {
-  const [activeTab, setActiveTab] = useState('overview');
-  const [research, setResearch] = useState(initialResearch);
+  const [activeTab, setActiveTab] = useState<Tab>('overview');
+  const [research, setResearch] = useState<GameResearch[]>(initialResearch);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddGame, setShowAddGame] = useState(false);
   const [newGameTitle, setNewGameTitle] = useState('');
-  const [newGamePlatform, setNewGamePlatform] = useState('PS1');
+  const [newGamePlatform, setNewGamePlatform] = useState<'PS1' | 'PSP' | 'APK'>('PS1');
 
   // Pricing calculator
   const [modal, setModal] = useState(0);
@@ -85,19 +110,19 @@ export default function Page() {
   const [presetActive, setPresetActive] = useState('PS1');
 
   // Operational
-  const [schedule, setSchedule] = useState(initialSchedule);
-  const [queue] = useState(initialQueue);
+  const [schedule, setSchedule] = useState<Schedule[]>(initialSchedule);
+  const [queue] = useState<QueueItem[]>(initialQueue);
   const [sopChecks, setSopChecks] = useState([true, true, false, false, false]);
-  const [calForm, setCalForm] = useState({ game: '', day: 'Sen', time: '09:00', platform: 'PS1'  });
+  const [calForm, setCalForm] = useState({ game: '', day: 'Sen', time: '09:00', platform: 'PS1' as Schedule['platform'] });
   const [showCalForm, setShowCalForm] = useState(false);
 
   // Admin
-  const [templateMode, setTemplateMode] = useState('Email');
+  const [templateMode, setTemplateMode] = useState<'Email' | 'WhatsApp'>('Email');
   const [tplJudul, setTplJudul] = useState('GTA San Andreas MOD - Full Misi');
   const [tplLink, setTplLink] = useState('https://drive.google.com/file/d/xxxxx');
   const [tplSize, setTplSize] = useState('1.4 GB');
   const [tplPlatform, setTplPlatform] = useState('PS1');
-  const [copied, setCopied] = useState(null);
+  const [copied, setCopied] = useState<string | null>(null);
 
   const [uploadForm, setUploadForm] = useState({
     judul: '',
@@ -108,7 +133,7 @@ export default function Page() {
     size: '',
   });
 
-  const [navFlash, setNavFlash] = useState(null);
+  const [navFlash, setNavFlash] = useState<string | null>(null);
   const [exportFlash, setExportFlash] = useState(false);
 
   const pricing = useMemo(() => {
@@ -214,7 +239,7 @@ Panduan lengkap ada di deskripsi produk. Need help? Balas chat ini ya kak 🙏`;
 
   const days = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
 
-  const handleNav = (tab) => {
+  const handleNav = (tab: Tab) => {
     setActiveTab(tab);
     setNavFlash(tab);
     setTimeout(() => setNavFlash(null), 1200);
@@ -279,7 +304,7 @@ Panduan lengkap ada di deskripsi produk. Need help? Balas chat ini ya kak 🙏`;
               return (
                 <button
                   key={item.id}
-                  onClick={() => handleNav(item.id)}
+                  onClick={() => handleNav(item.id as Tab)}
                   className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all border ${active ? 'bg-[var(--surface)] border-[var(--border-strong)] text-white' : 'border-transparent text-[var(--text-muted)] hover:text-white hover:bg-[var(--surface)]'}`}
                 >
                   <item.icon className={`h-5 w-5 shrink-0 ${active ? 'text-indigo-400' : ''}`} />
@@ -794,7 +819,7 @@ Panduan lengkap ada di deskripsi produk. Need help? Balas chat ini ya kak 🙏`;
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold flex items-center gap-2"><FileText className="h-4 w-4 text-emerald-400" /> Template Generator</h3>
                       <div className="flex rounded-full bg-[#101012] border border-[var(--border)] p-1">
-                        {(['Email', 'WhatsApp'] ).map(m => (
+                        {(['Email', 'WhatsApp'] as const).map(m => (
                           <button key={m} onClick={() => setTemplateMode(m)} className={`text-[11px] px-3 py-1 rounded-full font-medium transition ${templateMode === m ? 'bg-white text-black' : 'text-[var(--text-muted)] hover:text-white'}`}>{m}</button>
                         ))}
                       </div>
@@ -953,7 +978,7 @@ Panduan lengkap ada di deskripsi produk. Need help? Balas chat ini ya kak 🙏`;
           ].map(item => {
             const active = activeTab === item.id;
             return (
-              <button key={item.id} onClick={() => handleNav(item.id)} className={`flex flex-col items-center gap-1 rounded-xl py-2.5 transition ${active ? 'bg-[var(--surface)] text-white' : 'text-[var(--text-muted)]'}`}>
+              <button key={item.id} onClick={() => handleNav(item.id as Tab)} className={`flex flex-col items-center gap-1 rounded-xl py-2.5 transition ${active ? 'bg-[var(--surface)] text-white' : 'text-[var(--text-muted)]'}`}>
                 <item.icon className={`h-5 w-5 ${active ? 'text-indigo-400' : ''}`} />
                 <span className="text-[10px] font-medium">{item.label}</span>
               </button>
