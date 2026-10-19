@@ -13,12 +13,5 @@
   --text-muted: #a1a1aa;
   --text-faint: #71717a;
 }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-}
-
-.mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
+body { background: var(--bg); color: var(--text); }
+.mono { font-family: ui-monospace, monospace; }

@@ -1,13 +1,5 @@
-import './globals.css';
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="id">
-      <body>{children}</body>
-    </html>
-  );
+import "./globals.css";
+export const metadata = { title: "Shopee Mini OS" };
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return <html lang="id"><body>{children}</body></html>;
 }
