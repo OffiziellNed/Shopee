@@ -11,10 +11,7 @@
   "dependencies": {
     "next": "16.3.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "cheerio": "^1.1.0",
-    "@supabase/supabase-js": "^2.45.0",
-    "lucide-react": "^0.400.0"
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -24,8 +21,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49"
+    "typescript": "^5"
   }
 }
