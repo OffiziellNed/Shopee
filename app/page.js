@@ -26,36 +26,32 @@ import {
 } from 'lucide-react';
 
 // Types
-type Tab = 'overview' | 'growth' | 'operational' | 'admin';
 
-type GameResearch = {
-  id: string;
-  judul: string;
+  id;
+  judul;
   platform: 'PS1' | 'PSP' | 'APK';
-  trend: number;
+  trend;
   sumber: 'YouTube' | 'TikTok' | 'Google';
   status: 'Riset' | 'Approved' | 'Skip';
-  views: string;
+  views;
 };
 
-type Schedule = {
-  id: string;
-  game: string;
-  day: string;
-  time: string;
+  id;
+  game;
+  day;
+  time;
   platform: 'PS1' | 'PSP' | 'APK';
 };
 
-type QueueItem = {
-  id: string;
-  title: string;
+  id;
+  title;
   platform: 'PS1' | 'PSP' | 'APK';
-  size: string;
+  size;
   linkHealth: 'green' | 'red' | 'yellow';
   status: 'Belum Upload' | 'Sudah' | 'Perlu Update Link';
 };
 
-const initialResearch: GameResearch[] = [
+const initialResearch = [
   { id: '1', judul: 'GTA San Andreas Definitive', platform: 'PSP', trend: 9.4, sumber: 'TikTok', status: 'Approved', views: '2.4M' },
   { id: '2', judul: 'Bully Anniversary Edition', platform: 'APK', trend: 8.7, sumber: 'YouTube', status: 'Riset', views: '1.1M' },
   { id: '3', judul: 'God of War II', platform: 'PS1', trend: 9.1, sumber: 'YouTube', status: 'Approved', views: '3.2M' },
@@ -65,7 +61,7 @@ const initialResearch: GameResearch[] = [
   { id: '7', judul: 'PES 2024 Patch', platform: 'PSP', trend: 7.2, sumber: 'YouTube', status: 'Riset', views: '620K' },
 ];
 
-const initialSchedule: Schedule[] = [
+const initialSchedule = [
   { id: '1', game: 'GTA Vice City Stories', day: 'Sen', time: '09:00', platform: 'PSP' },
   { id: '2', game: 'Bully', day: 'Sen', time: '14:00', platform: 'APK' },
   { id: '3', game: 'God of War', day: 'Sel', time: '10:00', platform: 'PS1' },
@@ -75,7 +71,7 @@ const initialSchedule: Schedule[] = [
   { id: '7', game: 'Resident Evil 4', day: 'Sab', time: '10:00', platform: 'PS1' },
 ];
 
-const initialQueue: QueueItem[] = [
+const initialQueue = [
   { id: '1', title: 'Gran Turismo 4', platform: 'PS1', size: '2.8 GB', linkHealth: 'green', status: 'Sudah' },
   { id: '2', title: 'Black - Mod HD', platform: 'PS1', size: '1.2 GB', linkHealth: 'red', status: 'Perlu Update Link' },
   { id: '3', title: 'God Hand', platform: 'PS1', size: '1.1 GB', linkHealth: 'green', status: 'Belum Upload' },
@@ -95,12 +91,12 @@ const salesData = [
 ];
 
 export default function Page() {
-  const [activeTab, setActiveTab] = useState<Tab>('overview');
-  const [research, setResearch] = useState<GameResearch[]>(initialResearch);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [research, setResearch] = useState(initialResearch);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddGame, setShowAddGame] = useState(false);
   const [newGameTitle, setNewGameTitle] = useState('');
-  const [newGamePlatform, setNewGamePlatform] = useState<'PS1' | 'PSP' | 'APK'>('PS1');
+  const [newGamePlatform, setNewGamePlatform] = useState('PS1');
 
   // Pricing calculator
   const [modal, setModal] = useState(0);
@@ -110,19 +106,19 @@ export default function Page() {
   const [presetActive, setPresetActive] = useState('PS1');
 
   // Operational
-  const [schedule, setSchedule] = useState<Schedule[]>(initialSchedule);
-  const [queue] = useState<QueueItem[]>(initialQueue);
+  const [schedule, setSchedule] = useState(initialSchedule);
+  const [queue] = useState(initialQueue);
   const [sopChecks, setSopChecks] = useState([true, true, false, false, false]);
-  const [calForm, setCalForm] = useState({ game: '', day: 'Sen', time: '09:00', platform: 'PS1' as Schedule['platform'] });
+  const [calForm, setCalForm] = useState({ game: '', day: 'Sen', time: '09:00', platform: 'PS1' });
   const [showCalForm, setShowCalForm] = useState(false);
 
   // Admin
-  const [templateMode, setTemplateMode] = useState<'Email' | 'WhatsApp'>('Email');
+  const [templateMode, setTemplateMode] = useState('Email');
   const [tplJudul, setTplJudul] = useState('GTA San Andreas MOD - Full Misi');
   const [tplLink, setTplLink] = useState('https://drive.google.com/file/d/xxxxx');
   const [tplSize, setTplSize] = useState('1.4 GB');
   const [tplPlatform, setTplPlatform] = useState('PS1');
-  const [copied, setCopied] = useState<string | null>(null);
+  const [copied, setCopied] = useState(null);
 
   const [uploadForm, setUploadForm] = useState({
     judul: '',
@@ -133,7 +129,7 @@ export default function Page() {
     size: '',
   });
 
-  const [navFlash, setNavFlash] = useState<string | null>(null);
+  const [navFlash, setNavFlash] = useState(null);
   const [exportFlash, setExportFlash] = useState(false);
 
   const pricing = useMemo(() => {
@@ -154,7 +150,7 @@ export default function Page() {
 
   const handleAddGame = () => {
     if (!newGameTitle.trim()) return;
-    const newItem: GameResearch = {
+    const newItem = {
       id: Date.now().toString(),
       judul: newGameTitle,
       platform: newGamePlatform,
@@ -175,7 +171,7 @@ export default function Page() {
     setShowCalForm(false);
   };
 
-  const copyText = (text: string, id: string) => {
+  const copyText = (text, id) => {
     navigator.clipboard.writeText(text);
     setCopied(id);
     setTimeout(() => setCopied(null), 2000);
@@ -304,7 +300,7 @@ Panduan lengkap ada di deskripsi produk. Need help? Balas chat ini ya kak 🙏`;
               return (
                 <button
                   key={item.id}
-                  onClick={() => handleNav(item.id as Tab)}
+                  onClick={() => handleNav(item.id)}
                   className={`w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left transition-all border ${active ? 'bg-[var(--surface)] border-[var(--border-strong)] text-white' : 'border-transparent text-[var(--text-muted)] hover:text-white hover:bg-[var(--surface)]'}`}
                 >
                   <item.icon className={`h-5 w-5 shrink-0 ${active ? 'text-indigo-400' : ''}`} />
@@ -650,7 +646,7 @@ Panduan lengkap ada di deskripsi produk. Need help? Balas chat ini ya kak 🙏`;
                   {showAddGame && (
                     <div className="p-4 bg-[var(--surface-2)] border-b border-[var(--border)] flex flex-col lg:flex-row gap-3">
                       <input value={newGameTitle} onChange={e => setNewGameTitle(e.target.value)} placeholder="Judul game, cth: Bully Mod Indonesia" className="flex-1 bg-[#101012] border border-[var(--border)] rounded-xl px-3 py-2.5 text-[13px] focus:outline-none focus:border-indigo-500/50" />
-                      <select value={newGamePlatform} onChange={e => setNewGamePlatform(e.target.value as any)} className="bg-[#101012] border border-[var(--border)] rounded-xl px-3 py-2.5 text-[13px]">
+                      <select value={newGamePlatform} onChange={e => setNewGamePlatform(e.target.value)} className="bg-[#101012] border border-[var(--border)] rounded-xl px-3 py-2.5 text-[13px]">
                         <option>PS1</option><option>PSP</option><option>APK</option>
                       </select>
                       <div className="flex gap-2">
@@ -683,7 +679,7 @@ Panduan lengkap ada di deskripsi produk. Need help? Balas chat ini ya kak 🙏`;
                             <td className="px-3 py-3.5">
                               <select
                                 value={g.status}
-                                onChange={e => setResearch(research.map(r => r.id === g.id ? { ...r, status: e.target.value as any } : r))}
+                                onChange={e => setResearch(research.map(r => r.id === g.id ? { ...r, status: e.target.value } : r))}
                                 className={`text-[11px] px-2.5 py-1 rounded-full border font-medium bg-transparent focus:outline-none ${g.status === 'Approved' ? 'border-emerald-500/30 text-emerald-300' : g.status === 'Riset' ? 'border-amber-500/30 text-amber-300' : 'border-[var(--border)] text-[var(--text-muted)]'}`}
                               >
                                 <option className="bg-zinc-900">Riset</option>
@@ -717,7 +713,7 @@ Panduan lengkap ada di deskripsi produk. Need help? Balas chat ini ya kak 🙏`;
                       <input value={calForm.game} onChange={e => setCalForm({ ...calForm, game: e.target.value })} placeholder="Nama game" className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-3 py-2.5 text-[12px] focus:outline-none" />
                       <select value={calForm.day} onChange={e => setCalForm({ ...calForm, day: e.target.value })} className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-3 py-2.5 text-[12px]">{days.map(d => <option key={d}>{d}</option>)}</select>
                       <input type="time" value={calForm.time} onChange={e => setCalForm({ ...calForm, time: e.target.value })} className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-3 py-2.5 text-[12px]" />
-                      <select value={calForm.platform} onChange={e => setCalForm({ ...calForm, platform: e.target.value as any })} className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-3 py-2.5 text-[12px]"><option>PS1</option><option>PSP</option><option>APK</option></select>
+                      <select value={calForm.platform} onChange={e => setCalForm({ ...calForm, platform: e.target.value })} className="bg-[var(--surface-2)] border border-[var(--border)] rounded-xl px-3 py-2.5 text-[12px]"><option>PS1</option><option>PSP</option><option>APK</option></select>
                       <button onClick={handleAddSchedule} className="rounded-xl bg-emerald-500 text-black text-[12px] font-semibold px-3 py-2.5 hover:bg-emerald-400 transition">Tambah ke Kalender</button>
                     </div>
                   )}
@@ -819,7 +815,7 @@ Panduan lengkap ada di deskripsi produk. Need help? Balas chat ini ya kak 🙏`;
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold flex items-center gap-2"><FileText className="h-4 w-4 text-emerald-400" /> Template Generator</h3>
                       <div className="flex rounded-full bg-[#101012] border border-[var(--border)] p-1">
-                        {(['Email', 'WhatsApp'] as const).map(m => (
+                        {(['Email', 'WhatsApp']).map(m => (
                           <button key={m} onClick={() => setTemplateMode(m)} className={`text-[11px] px-3 py-1 rounded-full font-medium transition ${templateMode === m ? 'bg-white text-black' : 'text-[var(--text-muted)] hover:text-white'}`}>{m}</button>
                         ))}
                       </div>
@@ -978,7 +974,7 @@ Panduan lengkap ada di deskripsi produk. Need help? Balas chat ini ya kak 🙏`;
           ].map(item => {
             const active = activeTab === item.id;
             return (
-              <button key={item.id} onClick={() => handleNav(item.id as Tab)} className={`flex flex-col items-center gap-1 rounded-xl py-2.5 transition ${active ? 'bg-[var(--surface)] text-white' : 'text-[var(--text-muted)]'}`}>
+              <button key={item.id} onClick={() => handleNav(item.id)} className={`flex flex-col items-center gap-1 rounded-xl py-2.5 transition ${active ? 'bg-[var(--surface)] text-white' : 'text-[var(--text-muted)]'}`}>
                 <item.icon className={`h-5 w-5 ${active ? 'text-indigo-400' : ''}`} />
                 <span className="text-[10px] font-medium">{item.label}</span>
               </button>
